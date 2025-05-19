@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Guardian Watch Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css" />
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+        
+  <!-- Leaflet CSS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
+</head>
+<body>
+
+   
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <h1>Guardian Watch</h1>
+    <ul>
+    
+        <ul class="nav-links">
+            <li><a href="#">Emergency Alerts</a></li>
+            <li><a href="#alert-logs">Alert Logs</a></li>
+            <li><a href="#">User Profile</a></li>
+            
+          </ul>
+          
+      
+      
+    </ul>
+    <button id="logout-btn" class="logout-button">Logout</button>
+  </nav>
+
+  <!-- Main Dashboard -->
+  <div class="dashboard">
+    <h2>Live GPS Location</h2>
+    <div id="map"></div>
+
+    <button id="sos-btn">🚨 Trigger SOS</button>
+    <button id="cancel-sos-btn">🛑 Cancel SOS</button>
+    <audio id="sos-audio" src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg"></audio>
+
+
+
+  </div>
+  <div id="alert-logs" style="display: none; padding: 20px;">
+    <h2>🚨 Alert Logs</h2>
+
+
+    <button id="back-to-map-btn" class="back-btn">🔙 Back to Real-Time Map Tracking</button>
+
+    <label for="date-filter"><strong>Filter by date:</strong></label>
+    <input type="date" id="date-filter" />
+  
+    <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+      <thead>
+        <tr style="background-color: #007bff; color: white;">
+          <th style="padding: 10px; border: 1px solid #ccc;">📍 Address</th>
+          <th style="padding: 10px; border: 1px solid #ccc;">🕒 Time</th>
+          <th style="padding: 10px; border: 1px solid #ccc;">📌 Coordinates</th>
+        </tr>
+      </thead>
+      <tbody id="logs-table-body"></tbody>
+    </table>
+  </div>
+  
+  
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+        const auth = firebase.auth();
+        const database = firebase.database();
+
+  </script>
+
+
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+   <script src="firebase.js"></script>
+  <script src="dashboard.js"></script>
+
+   <script type="text/javascript">
+    (function () {
+      emailjs.init("8GYb-Z_9AeBJmMp1G"); // Replace with your actual Public Key
+    })();
+  </script>
+ 
+</body>
+</html>

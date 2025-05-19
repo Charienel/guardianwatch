@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Guardian Watch Sign Up</title>
+  <link rel="stylesheet" href="style.css"/>
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h2>Sign Up</h2>
+    <form id="signup-form">
+      <input type="text" id="firstName" placeholder="First Name" required />
+      <input type="text" id="lastName" placeholder="Last Name" required />
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <input type="text" id="phone" placeholder="Phone Number" required />
+      <input type="text" id="emergencyContact" placeholder="Emergency Contact Number" required />
+      <input type="text" id="parents" placeholder="Guardian" required />
+      <button type="submit">Create Account</button>
+    </form>
+    <p>Already have an account? <a href="login.html">Login here.</a></p>
+    <div id="error-message" style="color:red;"></div>
+    <div id="success-message" style="color:green;"></div>
+  </div>
+
+  <script src="firebase.js"></script>
+  
+
+  <script>
+    const auth = firebase.auth();
+    const database = firebase.database();
+    const form = document.getElementById("signup-form");
+    const errorMsg = document.getElementById("error-message");
+    const successMsg = document.getElementById("success-message");
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      errorMsg.textContent = "";
+      successMsg.textContent = "";
+
+      const email = form.email.value;
+      const password = form.password.value;
+
+      const userData = {
+        firstName: form.firstName.value,
+        lastName: form.lastName.value,
+        email: email,
+        phone: form.phone.value,
+        emergencyContact: form.emergency.value,
+        parents: form.parents.value,
+        createdAt: new Date().toISOString()
+      };
+
+      auth.createUserWithEmailAndPassword(email, password)
+        .then((cred) => {
+          return cred.user.sendEmailVerification().then(() => {
+            // Save user data under "Users/{uid}"
+            return database.ref('Users/' + cred.user.uid).set(userData);
+          });
+        })
+        .then(() => {
+          successMsg.textContent = "✅ Account successfully created! Please check your email to verify before logging in.";
+          form.reset();
+        })
+        .catch((err) => {
+          errorMsg.textContent = "❌ " + err.message;
+        });
+    });
+  </script>
+</body>
+</html>
